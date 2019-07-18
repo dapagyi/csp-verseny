@@ -1,0 +1,116 @@
+<% include ../../partials/head %>
+<body>
+<% include ../../partials/navbar %>
+<div class="container mx-auto px-0" style="padding-top:6em; padding-bottom:4em;">
+  <div class="bs-docs-section">
+
+    <% if (message.length > 0) { %>
+      <!-- <div class="alert alert-danger"><%- message %></div>-->
+      <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <!--<strong>Oh snap!</strong><a href="#" class="alert-link">Change a few things up</a> and try submitting again.-->
+        <strong>Hiba!</strong> <%- message %>
+      </div>
+    <% }; %>
+
+
+
+    <div class="row justify-content-center" style="padding-top:1em">
+
+
+      <div class="col-lg-9">
+
+        <div class="jumbotron">
+          <h1 class="display-4"><%=task.Problem.title%></h1>
+          <p id='problem' class="lead text-justify">
+            <%=task.Problem.description%>
+          </p>
+          <% if (task.Problem.image) { %>
+            <div class="row">
+              <%# console.log(task.Problem.image.split(';')); %>
+              <% task.Problem.image.split(';').forEach(element => { %>
+                <div class="mx-auto" style="margin:10px;">
+                  <img style="max-height:300px;" src="/static-secured/<%=task.Problem.id%>/<%=element%>" alt="" class="float-center">
+                </div>
+              <% }); %>
+            </div>
+          <% }; %>
+          <hr class="my-4">
+          <p>A megoldás egy pozitív egész szám.</p>
+          <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          </p>
+        </div>
+        <div class="fixed-bottom">
+          <div id="alert" class="alert alert-warning">
+            <%# <button type="button" class="close" data-dismiss="alert">&times;</button> %>
+            <%# <h4 class="alert-heading">Warning!</h4> %>
+            <p class="mb-0" id="alertText">Betöltés...</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-3">
+
+        <div class="card text-white bg-primary mb-4 mx-auto" style="max-width: 18rem;">
+          <div class="card-header"><%#team.name%>Csapatadatok</div>
+          <div class="card-body">
+            <h4 class="card-title"><%=team.name%></h4>
+            <%# <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> %>
+            <p class="card-text">Kreditek: <strong><%=team.credits%></strong></p>
+            <p class="card-text">Csapattagok: <%=teamMembers.join(', ');%></p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script>
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML" async></script>
+<script src="/static/moment-with-locales.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var serverExpireDate = '<%=task.expireDate%>';
+  var expireDate;
+
+  var socket = io('/problem');
+  socket.on('timeSync', (m) => {
+    //console.log(problem);
+    var diff = moment().diff(moment(m, 'YYYY-MM-DD HH:mm:ss ms'), 'milliseconds');
+    expireDate = moment(serverExpireDate).add(diff, 'milliseconds');
+    console.log('serverExpireDate', serverExpireDate);
+    console.log(expireDate.format('YYYY-MM-DD HH:mm:ss ms'));
+  });
+
+  window.onload = function () {
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById('problem')]);
+    var int = setInterval(() => {
+      if (!expireDate) return;
+      let s = expireDate.diff(moment(), 'seconds')
+      let t;
+      if (s < 0) {
+        t='Lejárt';
+      }
+      else {
+        t=`<strong>Hátralévő idő: ${moment.utc(1000*s).format(s >= 3600 ? 'hh:mm:ss' : 'mm:ss')}</strong>`;
+      }
+      let cl = 'info'
+      if (s <= 60) cl = 'warning';
+      if (s <= 30) cl = 'danger';
+      document.getElementById('alert').className = `alert alert-${cl}`; 
+      document.getElementById('alertText').innerHTML = t;
+    }, 100);
+  }
+</script>
+
+
+
+
+</body>

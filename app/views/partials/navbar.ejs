@@ -1,0 +1,41 @@
+<nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/">Verseny</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <%# <li class="nav-item"><!-- <li class="nav-item active"> -->
+          <a class="nav-link" href="/">Főoldal <!--<span class="sr-only">(current)</span>--></a>
+        </li> %>
+        <li class="nav-item">
+          <a class="nav-link" href="/stock-exchange">Tőzsde</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/team">Csapat</a>
+        </li>
+        <li class="nav-item">
+          <!-- <a class="nav-link" href="/profile">Profil<% if (user) { %> (<%=user.firstname + ' ' + user.lastname %>)<% } %></a> %> -->
+          <a class="nav-link" href="/profile">Profil</a>
+        </li>
+        <%- (user && user.username == 'admin') ? '<li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>' : ''%>
+      </ul>
+      <%# <form class="form-inline my-2 my-lg-0" action="/search" method="GET">
+        <input name="q" class="form-control mr-sm-2" type="search" placeholder="Keresés" aria-label="Search">
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Keresés</button>
+      </form> %>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li><a class="btn btn-success my-2 my-sm-0" href="#"><span></span> Sign Up</a></li> -->
+        <li><a class="btn btn-success my-2 my-sm-0" href="/auth/<%= user ? 'logout' : 'login'%>"><span></span> <%= user ? 'Kijelentkezés' : 'Bejelentkezés' %></a></li>
+        
+        <%# <div class="btn-group" role="group">
+          <button id="btnGroupDrop3" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" data-placement="left" aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop3">
+            <a class="dropdown-item" href="#">Dropdown link</a>
+            <a class="dropdown-item" href="#">Dropdown link</a>
+          </div>
+        </div>  %>
+      </ul>  
+    </div>
+</nav>

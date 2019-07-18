@@ -1,0 +1,25 @@
+{
+  "development": {
+    "port": 80,
+    "db": {
+      "username": "david",
+      "password": "MySQL125",
+      "database": "sequelize_passport",
+      "host": "localhost",
+      "dialect": "mysql",
+      "logging": false,
+      "charset": "utf8",
+      "collate": "utf8_general_ci",
+      "dialectOptions": {
+        "dateStrings": true,
+        "typeCast": true,
+        "timezone": "+00:00"
+      },
+      "timezone": "+02:00"
+    },
+    "sessionSecret": "asdasd",
+    "game": {
+      "maxPlayers": 3
+    }
+  }
+}

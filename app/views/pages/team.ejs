@@ -1,0 +1,28 @@
+<% include ../partials/head %>
+<body>
+<% include ../partials/navbar %>
+<div class="container" style="padding-top:8em">
+  <div class="bs-docs-section">
+    <div class="row">
+
+      <div class="col-lg-6">
+    
+        <div class="page-header">
+          <header>
+            <h3><%=team.name%></h3>
+          </header>
+        </div>
+      
+        <main>
+          <p>Jelkód csatlakozáshoz: <%=team.password%></p>
+          <p><a href="/team/leave">Kattints ide</a> a kilépéshez.</p>
+        </main>
+        
+      </div>
+      
+      <div class="col-lg-6"></div>
+      
+    </div>
+  </div>
+</div>
+</body>

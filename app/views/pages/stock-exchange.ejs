@@ -1,0 +1,353 @@
+<% include ../partials/head %>
+<body>
+<% include ../partials/navbar %>
+<div class="container mx-auto px-0" style="padding-top:6em; padding-bottom:2em;">
+  <div class="bs-docs-section">
+    
+    <div class="page-header">
+      <header id="header">
+        <h3>Tőzsde</h3>
+        <%# <h4> %>
+          <div class="d-lg-none">
+          <% var setLinks = []; %>
+          <% problemsets.forEach( e => { %>
+            <!--<button type="button" class="btn btn-link">Link</button>-->
+            <% setLinks.push(`<a href="#set_${e.id}">${e.title}</a>`) %>
+          <% }); %>
+          <%- setLinks.join(', '); %>
+          </div>
+        <%# </h4> %>
+      </header>
+    </div>
+    <div id="errDiv">
+      <% if (message.length > 0) { %>
+        <!-- <div class="alert alert-danger"><%- message %></div>-->
+        <div class="alert alert-dismissible alert-danger">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <!--<strong>Oh snap!</strong><a href="#" class="alert-link">Change a few things up</a> and try submitting again.-->
+          <strong>Hiba!</strong> <%- message %>
+        </div>
+      <% }; %>
+    </div>
+    <div class="row justify-content-center" style="padding-top:1em">
+
+
+      <div class="col-lg-9">
+
+        <% const columns = 3; %>
+
+        <% for(let setIndex=1; setIndex<=problemsets.length; setIndex++) { %>
+          
+          <% let problemset = problemsets[setIndex-1]; %>
+          <% let problems = problemset.Problems; %>
+          <% let rowsPerSet = ((problems.length - 1) - ((problems.length - 1) % columns)) / columns + 1;%>
+          <%# console.log(rowsPerSet); %>
+
+          <h4 id="set_<%=problemset.id%>"><%=problemset.title%> <!--(<%=rowsPerSet%> sorban)--></h4>
+          <hr class="my-3">
+          
+          <%# let n=0; %>
+          <% for(let rowIndex=1; rowIndex<=rowsPerSet; rowIndex++) { %>
+
+            <div class="row">
+            
+            <% let cardsInRow = Math.min(columns, problems.length - (rowIndex-1)*columns); %>
+            <% for (let columnIndex = 1; columnIndex <= cardsInRow; columnIndex++) { %>
+
+              <% let currentProblem = problems[(rowIndex-1)*columns+(columnIndex-1)]; %>
+              <%# console.log(currentProblem.title);%>
+              <div class="col-sm-<%=12/columns%>">
+                <div id="card_<%=currentProblem.id%>" class="card border-info mb-3 mx-auto" style="max-width:18rem;border-color:grey!important;">
+                  <h5 id="header_<%=currentProblem.id%>" class="card-header" style="color:grey;">
+                    <i style="float:right;" class="material-icons">lock</i>
+                    Zárolva
+                  </h5>
+                  <div class="card-body">
+                    <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-1" style="padding:0px;display:inline-block;">
+                      </div>
+                      <div class="col-10" style="padding:0px;display:inline-block;">
+                        <h5 id="title_<%=currentProblem.id%>" class="card-title text-center" style="color:darkgrey;padding:0px!important;"><strong><%=currentProblem.title%></strong></h5>
+                      </div>
+                      <div class="col-1" style="padding:0px;display:inline-block;">
+                        <p id="credit_<%=currentProblem.id%>" class="card-text text-right" style="white-space: nowrap;"><strong></strong></p>
+                      </div>
+                    </div>
+                    </div>
+                    <p id="things_<%=currentProblem.id%>" hidden class="card-text text-center">
+                    <span id="topic_<%=currentProblem.id%>" class="badge badge-info"></span></p>
+                    <div id="button_<%=currentProblem.id%>" class="text-center"><!--<a href="#" class="btn btn-info disabled" style="/*background-color:purple;border-color:purple;*/">Betöltés...</a>--></div>
+                  </div>
+                  <div hidden id="footer_<%=currentProblem.id%>" class="card-footer text-center">
+                    <%# <strong> %>
+                    <%#Hátralévő idő: 04:37>%>
+                    <%# </strong> %>
+                  </div>
+                </div>
+              </div>
+
+            <% } %>
+
+            <% cardsInRow %>
+            </div>
+
+          <% } %>
+        
+        <% } %>
+
+      </div>
+      
+      <div class="col-lg-3">
+
+        <div class="card text-white bg-primary mb-4 mx-auto" style="max-width: 18rem;">
+          <div class="card-header"><%#team.name%>Csapatadatok</div>
+          <div class="card-body">
+            <h4 class="card-title"><%=team.name%></h4>
+            <%# <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> %>
+            <p class="card-text">Kreditek: <strong id="teamCredits"><%=team.credits%></strong></p>
+            <%# <p class="card-text">Teljesített küldetések: <strong>4</strong></p> %>
+            <p class="card-text">Csapattagok: <%=teamMembers.join(', ');%></p>
+          </div>
+        </div>
+      
+        <h4 class="text-center">Extra feladatok:</h4>
+      
+
+        <div class="card border-primary mb-4 mx-auto" style="max-width:18rem;border-color:purple!important;">
+          <h5 class="card-header" style="color:purple;">
+            <i style="float:right;" class="material-icons">grade</i>
+            Új extra feladat!
+          </h5>
+          <div class="card-body">
+            <div class="container-fluid">
+            <div class="row">
+              <div class="col-1" style="padding:0px;display:inline-block;">
+                <%# <i class="material-icons">alarm</i> %>
+              </div>
+              <div class="col-10" style="padding:0px;display:inline-block;">
+                <h5 class="card-title text-center" style="color:purple;padding:0px!important;"><strong>Kecske Gerda operában</strong></h5>
+              </div>
+              <div class="col-1" style="padding:0px;display:inline-block;">
+                <%# <i style="float:right;" class="material-icons">lock</i> %>
+                <p class="card-text text-right" style="white-space: nowrap;"><strong>22</strong></p>
+                <%# <span class="numberCircle text-right"><span><strong>10</strong></span></span> %>
+                <%# <p><span class="bg-dark text-white rounded-circle px-3 py-1 mx-2 h3">1</span></p> %>
+              </div>
+            </div>
+            </div>
+            <p class="card-text text-center">
+            <span class="badge badge-info">számelmélet</span>
+            <div class="text-center"><a href="#" class="btn btn-info" style="background-color:purple;border-color:purple;">Ugrás a feladatra</a></div>
+          </div>
+          <div class="card-footer-primary text-center">
+            <%# <strong> %>
+            Hátralévő idő: 04:37
+            <%# </strong> %>
+          </div>
+        </div>
+
+        <div class="card border-primary mb-3 mx-auto" style="max-width:18rem;border-color:#daf794!important;">
+          <h5 class="card-header" style="/*color:#daf794;*/">
+            <i style="float:right;" class="material-icons">lock_open</i>
+            Új extra feladat!
+          </h5>
+          <div class="card-body">
+            <div class="container-fluid">
+            <div class="row">
+              <div class="col-1" style="padding:0px;display:inline-block;">
+                <i class="material-icons">lock_open</i>
+              </div>
+              <div class="col-10" style="padding:0px;display:inline-block;">
+                <h5 class="card-title text-center" style="color:#daf794;padding:0px!important;"><strong>Csenge bálázik haaa</strong></h5>
+              </div>
+              <div class="col-1" style="padding:0px;display:inline-block;">
+                <%# <i style="float:right;" class="material-icons">lock</i> %>
+                <p class="card-text text-right" style="white-space: nowrap;"><strong>22</strong></p>
+                <%# <span class="numberCircle text-right"><span><strong>10</strong></span></span> %>
+                <%# <p><span class="bg-dark text-white rounded-circle px-3 py-1 mx-2 h3">1</span></p> %>
+              </div>
+            </div>
+            </div>
+            <p class="card-text text-center">
+            <%# <span class="badge badge-info">kombinatorika</span> %>
+            <div class="text-center"><a href="#" class="btn btn-info" style="background-color:#daf794;border-color:#daf794;">Ugrás a feladatra</a></div>
+          </div>
+          <div class="card-footer text-center">
+            <%# <strong> %>
+            Hátralévő idő: 04:37
+            <%# </strong> %>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/moment-with-locales.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  // console.log(moment());
+  moment.locale('hu');
+
+  /*const config = {
+    //cardStyle, headerStyle, headerHtml, titleStyle, buttonHtml, footerHidden
+    waitingForResearch: ['', '', '<i style="float:right;" class="material-icons">lock_open</i>Elérhető', 'padding:0px!important;', '<a href="#/research/${ProblemId}" class="btn btn-outline-${class}">Felkutatás (${researchCost})</a>', true, 'info'] ,
+    waitingForUndertake: ['', '', '<i style="float:right;" class="material-icons">touch_app</i>Elvállalható', 'padding:0px!important;', '<a href="#/undertake/${ProblemId}" class="btn btn-outline-${class}">Elfogadás (${undertakeCost})</a>', false, 'info'] ,
+    available: ['', '', '<i style="float:right;" class="material-icons">alarm</i><strong>Megoldásra vár</strong>', 'padding:0px!important;', '<a href="#/problem/${ProblemId}" class="btn btn-outline-${class}">Ugrás a feladatra</a>', false, 'info'] ,
+    missed: ['border-color:red!important;', '', '<i style="float:right;" class="material-icons">close</i>Sikertelen', '/padding:0px!important;', '<a href="#/problem/${ProblemId}" class="btn btn-outline-${class}">Lejárt feladat megtekintése</a>', true, 'danger'] ,
+  };*/
+  var expireDates = {};
+  var lastTasks;
+
+  var serverDate;
+
+  window.onload = function () {
+    var int = setInterval(() => {
+      let _expireDates = expireDates;
+      for (var key in _expireDates) {
+        if (_expireDates.hasOwnProperty(key)) {
+          // console.log(key + " -> " + _expireDates[key]);
+          let s = moment(_expireDates[key]).diff(moment(), 'seconds')
+          let t;
+            // obj = lastTasks.indexOf(obj);
+          if (s < 0) {
+            // console.log(moment(_expireDates[key]).diff(serverDate));
+            var obj = lastTasks.filter(item => item.ProblemId == key);
+            obj[0].status = 'missed';
+            // console.log(lastTasks);
+            t='Lejárt';
+            setCard(obj[0], _expireDates);
+            delete _expireDates[key];
+          }
+          else {
+            t=`<strong>Hátralévő idő: ${moment.utc(1000*s).format(s >= 3600 ? 'hh:mm:ss' : 'mm:ss')}</strong>`;
+          }
+          expireDates = _expireDates;
+          document.getElementById(`footer_${key}`).innerHTML = t;
+          // el(key, 'footer').innerHTML = t;
+        }
+      }
+    }, 100); 
+  }
+
+
+  function setCard(task, _expireDates) {
+    let m = moment(serverDate, 'YYYY-MM-DD HH:mm:ss ms');
+    
+    let P = task.Problem;
+    
+    function el(el) {
+      return document.getElementById(`${el}_${P.id}`);
+    }
+    
+    let config = {
+      //cardStyle, headerStyle, headerIcon, headerTitle, titleStyle, class, buttonHref, buttonTitle, footerHidden
+      locked: ['border-color:grey!important;', 'color:grey;', 'lock', 'Zárolva', 'color:darkgrey;', 'info', '', '', true] ,
+      waitingForResearch: ['', '', 'lock_open', 'Elérhető', '', 'info', `research(${P.id});`, `Felkutatás (${P.researchCost})`, true] ,
+      waitingForUndertake: ['', '', 'touch_app', 'Elvállalható', '', 'info', `undertake(${P.id});`, `Elfogadás (${P.undertakeCost})`, false] ,
+      available: ['border-color:#ffc107!important;', '', 'alarm', 'Megoldásra vár', '', 'warning', `moveTo('./problem/${P.id}');`, 'Ugrás a feladatra', false] ,
+      missed: ['border-color:red!important;', '', 'close', 'Sikertelen', '', 'danger', ``, 'Lejárt feladat megtekintése', true] ,
+      done: ['border-color:green!important;', '', 'done', 'Megoldva', '', 'success', '', '', true]
+    }
+    // if (task.status == 'locked') return;
+    config = config[task.status];
+    //DEF:
+    // !!! <---- console.log(config, P);
+    el('card').style.cssText = 'max-width:18rem;';
+    el('card').style.cssText += config[0];
+
+    el('title').style.cssText = 'padding:0px!important;';
+    el('title').style.cssText += config[4];
+    //color:darkgrey;padding:0px!important;
+
+    el('header').style.cssText = config[1];
+    el('header').innerHTML = `<i style="float:right;" class="material-icons">${config[2]}</i>${config[3]}`;
+    el('footer').hidden = config[8];
+    // el('footer').style.cssText = config[0];
+    
+    if (config[6]) {
+      el('button').innerHTML = `<button type="button" onclick="${config[6]}" style="margin-top:5px;" class="btn btn-outline-${config[5]}">${config[7]}</button>`;
+      // el('things').style.marginBottom = "16px";
+    }
+    else {
+      el('button').innerHTML = ``;
+    }
+      el('things').style.marginBottom = "0px";
+
+
+    if (P.topic && ['waitingForUndertake', 'available', 'missed', 'done'].includes(task.status)) {
+      el('things').hidden = false;
+      var t = P.topic.split(', ');
+      t.forEach((element, index) => {
+        t[index] = `<span style="margin-bottom:3px;" class="badge badge-${config[5]}">${element}</span>`;
+      });
+      el('things').innerHTML = t.join(' ');
+    }
+  
+    if (P.credit && ['waitingForUndertake', 'available'].includes(task.status)) {
+      el('credit').innerHTML = `<strong>[${P.credit}]</strong>`;
+    }
+    else { 
+      el('credit').innerHTML = '';
+    }
+
+    switch (task.status) {
+      case 'waitingForUndertake':
+        el('footer').innerHTML = `Időkorlát: ${moment.utc(1000*P.timeLimit).format('mm:ss')}`;
+        break;
+      case 'available':
+        var diff = moment(task.expireDate).diff(m, 'milliseconds');
+        _expireDates[task.ProblemId] = moment().add(diff, 'milliseconds');
+        break;
+    }
+  }
+
+
+  var socket = io('/stock-exchange');
+
+  socket.on('updateTasks', (tasks, m, credits) => {
+    if (credits != null) document.getElementById('teamCredits').innerHTML = credits;
+    serverDate = m;
+    console.log(tasks);
+    
+    var _expireDates = {}// = expireDates;
+    // var _expireDates = expireDates;
+
+    lastTasks = tasks;
+    tasks.forEach(task => {
+      setCard(task, _expireDates);
+    });
+    expireDates = _expireDates;
+  });
+  
+  socket.on('err', msg => {
+    console.error(msg);
+    var s = `<div style="margin-top:5px;" class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Hiba!</strong> ${msg}</div>`;
+    document.getElementById('errDiv').innerHTML += s;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // document.getElementById('header').scrollIntoView();
+  });
+
+  function moveTo(location) {
+    window.location = location;
+  }
+
+  function research(id) {
+    console.log('research:', id);
+    socket.emit('research', id);
+  }
+
+  function undertake(id) {
+    console.log('undertake:', id);
+    socket.emit('undertake', id);
+  }
+
+</script>
+
+
+
+
+</body>

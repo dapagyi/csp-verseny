@@ -1,0 +1,55 @@
+<% include ../partials/head %>
+<body>
+<% include ../partials/navbar %>
+<div class="container" style="padding-top:8em">
+  <div class="bs-docs-section">
+    <div class="row">
+
+      <div class="col-lg-4"></div>
+    
+      <div class="col-lg-4">
+    
+        <div class="page-header">
+          <header>
+            <h3>Bejelentkezés</h3>
+          </header>
+        </div>
+      
+        <main>
+          <% if (message.length > 0) { %>
+            <!-- <div class="alert alert-danger"><%- message %></div>-->
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <!--<strong>Oh snap!</strong><a href="#" class="alert-link">Change a few things up</a> and try submitting again.-->
+              <strong>Hiba!</strong> <%- message %>
+            </div>
+          <% } %>
+          <form id="login" name="login" method="post" action="/auth/login">
+            <fieldset>
+              <div class="form-group">
+                <label for="usernameInput">Felhasználónév</label>
+                <input name="username" type="text" class="form-control" id="usernameInput">
+              </div>
+              <div class="form-group">
+                <label for="passwordInput">Jelszó</label>
+                <input name="password" type="password" class="form-control" id="passwordInput">
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Bejelentkezés</button>
+              </div>
+            </fieldset>
+          </form>
+          <div class="text-center">
+            Nincs még fiókod? <a href="/auth/signup">Itt regisztrálhatsz.</a>
+          </div>
+          
+        </main>
+        
+      </div>
+      
+      <div class="col-lg-4"></div>
+      
+    </div>
+  </div>
+</div>
+</body>

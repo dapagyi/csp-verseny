@@ -1,0 +1,61 @@
+<% include ../partials/head %>
+<body>
+<% include ../partials/navbar %>
+<div class="container" style="padding-top:8em">
+  <div class="bs-docs-section">
+    <div class="row">
+
+      <div class="col-lg-4"></div>
+    
+      <div class="col-lg-4">
+    
+        <div class="page-header">
+          <header>
+            <h3>Regisztráció</h3>
+          </header>
+        </div>
+      
+        <main>
+          <% if (message.length > 0) { %>
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Hiba!</strong> <%- message %>
+            </div>
+          <% } %>
+          <form id="signup" name="signup" method="post" action="/auth/signup">
+            <fieldset>
+              <div class="form-group">
+                <label for="usernameInput">Felhasználónév</label>
+                <input required name="username" type="text" class="form-control" id="usernameInput">
+              </div>
+                <div class="form-group">
+                <label for="fullnameInput">Teljes név</label>
+                <input required name="fullname" type="text" class="form-control" id="fullnameInput">
+              </div>
+              <div class="form-group">
+                <label for="emailInput">Email</label>
+                <input name="email" type="email" class="form-control" id="emailInput">
+              </div>
+              <div class="form-group">
+                <label for="passwordInput">Jelszó</label>
+                <input required name="password" type="password" class="form-control" id="passwordInput">
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Regisztráció</button>
+              </div>
+            </fieldset>
+          </form>
+          <div class="text-center">
+            Van már fiókod? <a href="/auth/login">Itt jelentkezhetsz be.</a>
+          </div>
+          
+        </main>
+        
+      </div>
+      
+      <div class="col-lg-4"></div>
+      
+    </div>
+  </div>
+</div>
+</body>
