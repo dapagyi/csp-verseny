@@ -1,0 +1,25 @@
+/* Set a background image by replacing the URL below */
+body {
+  /* background: url('https://source.unsplash.com/twukN12EN7c/1920x1080') no-repeat center center fixed; */
+  /* background: url('https://visme.co/blog/wp-content/uploads/2017/07/50-Beautiful-and-Minimalist-Presentation-Backgrounds-011.jpg') no-repeat center center fixed; */
+  /*background: url('https://3718aeafc638f96f5bd6-d4a9ca15fc46ba40e71f94dec0aad28c.ssl.cf1.rackcdn.com/journal-applied-mathematics-and-statistics.png') no-repeat center center fixed;*/
+  /*background: url('/static/white-wall.jpg');*/
+  background-color: #f2f7f6;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/*.mathtest {
+  border-color: purple!important;
+}
+
+.mathtest .card-title {
+  color: purple;
+}
+
+.mathtest .badge {
+
+}*/
