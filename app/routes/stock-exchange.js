@@ -60,8 +60,9 @@ function updateTasks(socket, TeamId, credits = null) {
       attributes: ['id', 'researchCost', 'undertakeCost', 'topic', 'credit', 'timeLimit'], 
     }],
     individualHooks: true
-  }).then(async (tasks) => {
-    // console.log('after hook');
+  }).then(/*async*/ (tasks) => {
+    // console.log('after hook', tasks[1].status, tasks[1].Problem.title);
+    // console.log()
     /*
     const start = async () => {
       await asyncForEach(tasks, async (task) => {
@@ -87,6 +88,7 @@ function updateTasks(socket, TeamId, credits = null) {
       kutatás vagy elfogadás esetén pedig az egész csapatnak
     
     */
+    // console.log('after hook', tasks[1].status, tasks[1].Problem.id);
     socket.emit('updateTasks', tasks, moment().format('YYYY-MM-DD HH:mm:ss ms'), credits);
     // console.log('Done');
   });

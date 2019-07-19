@@ -317,7 +317,7 @@
     // var _expireDates = expireDates;
 
     lastTasks = tasks;
-    tasks.forEach(task => {
+    lastTasks.forEach(task => {
       setCard(task, _expireDates);
     });
     expireDates = _expireDates;

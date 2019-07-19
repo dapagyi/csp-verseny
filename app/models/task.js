@@ -3,7 +3,7 @@ module.exports = function(sequelize, Sequelize) {
 
 	var Task = sequelize.define('Task', {
 		id: { autoIncrement: true, primaryKey: true, type: Sequelize.INTEGER},
-		tries: {type:Sequelize.TEXT, allowNull: true},
+		tries: {type:Sequelize.TEXT, allowNull: false, defaultValue: ''},
 		status: {type: Sequelize.ENUM('locked', 'waitingForResearch', 'waitingForUndertake', 'available', 'done', 'missed'), allowNull: false },
 		expireDate: {type: Sequelize.DATE, allowNull: false}
 	});
@@ -20,8 +20,9 @@ module.exports = function(sequelize, Sequelize) {
 		
     const start = async () => {
       await asyncForEach(tasks, async (task) => {
-				// console.log(task.id);
-        if (task.status == 'available' && moment(task.expireDate).diff(moment(), 'seconds') < 0) {
+				if (task.status == 'available' && moment(task.expireDate).diff(moment(), 'seconds') < 0) {
+					// console.log(task.id, moment(task.expireDate).diff(moment(), 'seconds'));
+					// console.log(task.id, moment().format('HH:mm:ss'), moment(task.expireDate).format('HH:mm:ss'));
 					task.status = 'missed';
 					await task.save();
 					// console.log(task.id, 'updated');

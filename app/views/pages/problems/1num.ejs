@@ -30,25 +30,35 @@
               <%# console.log(task.Problem.image.split(';')); %>
               <% task.Problem.image.split(';').forEach(element => { %>
                 <div class="mx-auto" style="margin:10px;">
-                  <img style="max-height:300px;" src="/static-secured/<%=task.Problem.id%>/<%=element%>" alt="" class="float-center">
+                  <img style="max-height:300px;" src="/static-secured/<%=task.Problem.id%>/<%=element%>" alt="" class="float-center img-thumbnail">
                 </div>
               <% }); %>
             </div>
           <% }; %>
-          <hr class="my-4">
-          <p>A megoldás egy pozitív egész szám.</p>
-          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+
+          <p id="topics" class="card-text text-center" style="margin-bottom: 0px;">
+            <%- task.Problem.topic.split(', ').map(el => {return `<span style="margin-bottom:-10px;" class="badge badge-info">${el}</span>`}).join(' ') %>
+            <%# <span style="margin-bottom:3px;" class="badge badge-info">Logika</span> %>
           </p>
-        </div>
-        <div class="fixed-bottom">
-          <div id="alert" class="alert alert-warning">
-            <%# <button type="button" class="close" data-dismiss="alert">&times;</button> %>
-            <%# <h4 class="alert-heading">Warning!</h4> %>
-            <p class="mb-0" id="alertText">Betöltés...</p>
+          <hr class="my-4">
+          <p>A megoldás egy természetes szám.</p>
+          
+          <div style="max-width:100px;" class="mx-auto form-group text-center">
+            <form onsubmit="return false;">
+              <label class="p-0 col-form-label col-form-label-lg" for="inputLarge">Megoldás</label>
+              <input type="number" name="solution" min="0" required id="solution" style="text-align:center;" class="m-1 form-control form-control-lg" placeholder="" id="inputLarge">
+              <%# <div class="mx-auto"><a class="btn btn-primary btn-lg" onclick="submit();" role="button">Küldés</a></div> %>
+              <%# <button type="button" onclick="${config[6]}" style="margin-top:5px;" class="btn btn-outline-${config[5]}">${config[7]}</button> %>
+              <button type="submit" onclick="submitData();" class="btn btn-outline-primary btn-lg btn-block">Küldés</button>
+            </form>
           </div>
+
+          <%# <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          </p> %>
         </div>
       </div>
+      
       
       <div class="col-lg-3">
 
@@ -64,6 +74,13 @@
 
       </div>
 
+    </div>
+    <div class="fixed-bottom">
+      <div id="alert" class="alert alert-warning">
+        <%# <button type="button" class="close" data-dismiss="alert">&times;</button> %>
+        <%# <h4 class="alert-heading">Warning!</h4> %>
+        <p class="mb-0" id="alertText">Betöltés...</p>
+      </div>
     </div>
   </div>
 </div>
@@ -81,12 +98,33 @@
   var expireDate;
 
   var socket = io('/problem');
-  socket.on('timeSync', (m) => {
+  socket.on('connect', () => {
+    socket.emit('timeSync', '<%=task.ProblemId%>');
+  })
+
+  socket.on('timeSync', (m, _serverExpireDate) => {
     //console.log(problem);
+    serverExpireDate = _serverExpireDate;
     var diff = moment().diff(moment(m, 'YYYY-MM-DD HH:mm:ss ms'), 'milliseconds');
     expireDate = moment(serverExpireDate).add(diff, 'milliseconds');
     console.log('serverExpireDate', serverExpireDate);
     console.log(expireDate.format('YYYY-MM-DD HH:mm:ss ms'));
+  });
+
+  function submitData() {
+    var v = document.getElementById('solution');
+    socket.emit('solution', v.value);  
+    v.value = '';
+  }
+
+  socket.on('solutionResponse', (resp, err = null) => {
+    if (resp) {
+      alert('Helyes megoldás!');
+      window.location.href = "/stock-exchange";
+    }
+    else {
+      alert(err ? err : 'Helytelen megoldás');
+    }
   });
 
   window.onload = function () {

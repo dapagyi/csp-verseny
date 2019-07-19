@@ -1,21 +1,21 @@
 {
-  "name": "sequelize-passport-example",
+  "name": "csp-verseny",
   "version": "1.0.0",
-  "description": "Using Passport with Sequelize and MySQL",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lyndachiwetelu/using-passport-with-sequelize-and-mysql.git"
+    "url": "git+https://github.com/dapagyi/csp-verseny.git"
   },
-  "author": "",
+  "author": "dapagyi",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lyndachiwetelu/node-passport-with-sequelize-and-mysql-example/issues"
+    "url": "https://github.com/dapagyi/csp-verseny/issues"
   },
-  "homepage": "https://github.com/lyndachiwetelu/node-passport-with-sequelize-and-mysql-example#readme",
+  "homepage": "https://github.com/dapagyi/csp-verseny#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "connect-flash": "^0.1.1",
