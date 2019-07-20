@@ -24,6 +24,9 @@ Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
+  if (db[modelName].addHooks) {
+    db[modelName].addHooks(db);
+  }
 });
 
 db.sequelize = sequelize;

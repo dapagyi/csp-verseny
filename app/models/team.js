@@ -9,7 +9,8 @@ module.exports = function(sequelize, DataTypes) {
 	});
 
 	Team.associate = function(models) {
-    models.Team.hasMany(models.User, {as: 'Members'});
+		models.Team.hasMany(models.User, {as: 'Members'});
+		models.Team.belongsToMany(models.Problem, {as: 'Problems', through: models.Task, foreignKey: 'TeamId'});
 	};
 
 	return Team;

@@ -18,6 +18,7 @@ module.exports = function(sequelize, Sequelize) {
 
   Problem.associate = function(models) {
     models.Problem.hasMany(models.Task, {as: 'Tasks'});
+    models.Problem.belongsToMany(models.Team, {as: 'Teams', through: models.Task, foreignKey: 'ProblemId'});
 	};
 
 	return Problem;

@@ -113,7 +113,7 @@
       
         <h4 class="text-center">Extra feladatok:</h4>
       
-
+        <!--
         <div class="card border-primary mb-4 mx-auto" style="max-width:18rem;border-color:purple!important;">
           <h5 class="card-header" style="color:purple;">
             <i style="float:right;" class="material-icons">grade</i>
@@ -178,7 +178,7 @@
             Hátralévő idő: 04:37
             <%# </strong> %>
           </div>
-        </div>
+        </div>-->
 
 
       </div>
@@ -205,6 +205,7 @@
   var serverDate;
 
   window.onload = function () {
+    //TODO: task frissítéshez áttenni? - bizonytalan
     var int = setInterval(() => {
       let _expireDates = expireDates;
       for (var key in _expireDates) {
@@ -220,12 +221,12 @@
             // console.log(lastTasks);
             t='Lejárt';
             setCard(obj[0], _expireDates);
-            delete _expireDates[key];
+            delete expireDates[key];
           }
           else {
             t=`<strong>Hátralévő idő: ${moment.utc(1000*s).format(s >= 3600 ? 'hh:mm:ss' : 'mm:ss')}</strong>`;
           }
-          expireDates = _expireDates;
+          // expireDates = _expireDates;
           document.getElementById(`footer_${key}`).innerHTML = t;
           // el(key, 'footer').innerHTML = t;
         }
@@ -275,7 +276,7 @@
     else {
       el('button').innerHTML = ``;
     }
-      el('things').style.marginBottom = "0px";
+    el('things').style.marginBottom = "0px";
 
 
     if (P.topic && ['waitingForUndertake', 'available', 'missed', 'done'].includes(task.status)) {
@@ -286,6 +287,7 @@
       });
       el('things').innerHTML = t.join(' ');
     }
+    //FIXME: más esetben elrejteni
   
     if (P.credit && ['waitingForUndertake', 'available'].includes(task.status)) {
       el('credit').innerHTML = `<strong>[${P.credit}]</strong>`;

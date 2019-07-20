@@ -111,19 +111,19 @@
     console.log(expireDate.format('YYYY-MM-DD HH:mm:ss ms'));
   });
 
+  var v = document.getElementById('solution');
   function submitData() {
-    var v = document.getElementById('solution');
     socket.emit('solution', v.value);  
-    v.value = '';
   }
 
-  socket.on('solutionResponse', (resp, err = null) => {
-    if (resp) {
-      alert('Helyes megoldás!');
-      window.location.href = "/stock-exchange";
-    }
-    else {
-      alert(err ? err : 'Helytelen megoldás');
+  socket.on('solutionResponse', (redirect, msg) => {
+    v.value = '';
+    alert(msg);
+    // console.log(redirect, msg);
+    if (redirect) {
+      setTimeout(function(){ 
+        window.location.href = "/stock-exchange";
+      }, 500);  
     }
   });
 
