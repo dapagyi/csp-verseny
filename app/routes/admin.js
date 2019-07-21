@@ -20,25 +20,52 @@ models.User.findOrCreate({where: {username: 'admin'}, defaults: { password: gene
   // /*if (created)*/ console.log("Admin created at", admin.get('createdAt'));
 });
 
-// const nsp = io.of('/teamselection');
-// nsp.on('connection', (socket) => {
-//   updateTeams(socket);
-// });
-
-// function updateTeams(socket = null) {
-//   models.Team.findAll({attributes: ['id', 'name'], include: [ {model: models.User, as: 'Members', attributes: ['fullname']} ], order: [['name', 'ASC']]}).then(teams => {
-//     if (socket != null) {
-//       socket.emit('updateTeams', teams)
-//     }
-//     else {
-//       nsp.emit('updateTeams', teams)
-//     }
-//   });    
-// }
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
 
 router.get('/', (req, res) => {
   // res.send('Admin');
   res.render('admin', {user: req.user})
+});
+
+router.get('/start', (req, res) => {
+  models.Problem.findAll({where: {ProblemsetId: 1}, attributes: ['id']}).then(firstProblems => {
+
+  models.Team.findAll({
+    attributes: ['id']
+  }).then(async (teams) => {
+    
+  await asyncForEach(teams, async team => { 
+
+    asyncForEach(firstProblems, async problem => { 
+      
+      models.Task.findOrCreate({where: {
+        TeamId: team.id,
+        ProblemId: problem.id
+      }, defaults: {
+        status: 'waitingForResearch'
+      }}).then(([task, created]) => {
+        if (!created && task.status != 'waitingForResearch') {
+          task.status = 'waitingForResearch';
+          task.save();
+        }
+      });
+      
+    });
+
+  });
+  
+  }).finally(()=>{
+    
+      io.of('stock-exchange').emit('refresh');
+      res.redirect('/admin');
+
+  });
+  });
+
 });
 
 

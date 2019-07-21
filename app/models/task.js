@@ -37,7 +37,7 @@ module.exports = function(sequelize, Sequelize) {
 					models.Team.findAll({
 
 					}).then(async (teams) => {
-						teams.forEach(async team => {
+						asyncForEach(teams, async team => {
 							
 							var problems = await team.getProblems({
 								through: {
@@ -76,11 +76,11 @@ module.exports = function(sequelize, Sequelize) {
 									ProblemsetId: teamLevel
 								}
 							});
-							console.log(team.name, `${solvedProblemsCount}/${allProblemsInSet}`);
+							// console.log(team.name, `${solvedProblemsCount}/${allProblemsInSet}`);
 							if (solvedProblemsCount/allProblemsInSet >= 0.5) {
 								var maxLevel = await models.Problemset.max('id');
 								if (teamLevel < maxLevel) {
-									console.log('new level unlocked', maxLevel);
+									// console.log('new level unlocked', maxLevel);
 									models.Problem.findAll({
 										where: {
 											ProblemsetId: teamLevel+1
@@ -88,7 +88,6 @@ module.exports = function(sequelize, Sequelize) {
 										attributes: ['id']
 									}).then(async nextProblems => {
 										await nextProblems.forEach(p => {
-											console.log();
 											models.Task.findOrCreate({where: {
 												TeamId: team.id,
 												ProblemId: p.id,

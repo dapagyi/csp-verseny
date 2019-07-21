@@ -6,7 +6,8 @@ var moment = require('moment');
 module.exports = (io) => {
 
 //DEV:
-var d = [[2, 1200], [6, 20], [7, 4000]];
+/*
+var d = [[2, 900], [6, 20], [7, 4000]];
 d.forEach(e => {
   if (e[1] != -1) models.Task.findByPk(e[0], {hooks:false}).then(task => {
     task.status = 'available';
@@ -17,8 +18,7 @@ d.forEach(e => {
     });
   });
 });
-models.Task.update({tries: ''}, {where: {}});
-
+models.Task.update({tries: ''}, {where: {}});*/
 
 
 var _ = require('lodash');

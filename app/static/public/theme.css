@@ -12,7 +12,12 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-/*.mathtest {
+/*
+.container {
+  transform: scale(1.1);
+}
+
+.mathtest {
   border-color: purple!important;
 }
 

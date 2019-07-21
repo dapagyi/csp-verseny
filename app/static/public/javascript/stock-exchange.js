@@ -6,9 +6,10 @@ var lastTasks;
 
 var serverDate;
 
-window.onload = function () {
+var int;
+function setInt() {
   //TODO: task frissítéshez áttenni? - bizonytalan
-  var int = setInterval(() => {
+  int = setInterval(() => {
     let _expireDates = expireDates;
     for (var key in _expireDates) {
       if (_expireDates.hasOwnProperty(key)) {
@@ -37,6 +38,7 @@ window.onload = function () {
 }
 
 
+
 function setCard(task, _expireDates) {
   let m = moment(serverDate, 'YYYY-MM-DD HH:mm:ss ms');
   
@@ -61,7 +63,7 @@ function setCard(task, _expireDates) {
   // !!! <---- console.log(config, P);
   el('card').style.cssText = 'max-width:18rem;';
   el('card').style.cssText += config[0];
-
+  
   el('title').style.cssText = 'padding:0px!important;';
   el('title').style.cssText += config[4];
   //color:darkgrey;padding:0px!important;
@@ -79,8 +81,8 @@ function setCard(task, _expireDates) {
     el('button').innerHTML = ``;
   }
   el('things').style.marginBottom = "0px";
-
-
+  
+  
   if (P.topic && ['waitingForUndertake', 'available', 'missed', 'done'].includes(task.status)) {
     el('things').hidden = false;
     var t = P.topic.split(', ');
@@ -90,7 +92,7 @@ function setCard(task, _expireDates) {
     el('things').innerHTML = t.join(' ');
   }
   //FIXME: más esetben elrejteni
-
+  
   if (P.credit && ['waitingForUndertake', 'available'].includes(task.status)) {
     el('credit').innerHTML = `<strong>[${P.credit}]</strong>`;
   }
@@ -111,19 +113,33 @@ function setCard(task, _expireDates) {
 
 var socket = io('/stock-exchange');
 
+window.onload = function () {
+  setInt();
+}
 socket.on('updateTasks', (tasks, m, credits) => {
-  if (credits != null) document.getElementById('teamCredits').innerHTML = credits;
-  serverDate = m;
   console.log(tasks);
+
+  if (credits != null) document.getElementById('teamCredits').innerHTML = credits;
+  
+  serverDate = m;
+  clearInterval(int);
   
   var _expireDates = {}// = expireDates;
   // var _expireDates = expireDates;
 
-  lastTasks = tasks;
+  lastTasks = tasks
+  for (var i=0; i<lastTasks.length; i++){
+    lastTasks[i] = $.extend(true, { }, lastTasks[i]);
+  }
   lastTasks.forEach(task => {
     setCard(task, _expireDates);
   });
   expireDates = _expireDates;
+  setInt();
+});
+
+socket.on('refresh', ()=>{
+  location.reload();
 });
 
 socket.on('err', msg => {
